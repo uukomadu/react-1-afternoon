@@ -1,59 +1,66 @@
 import React, { Component } from 'react';
 
 class FilterObject extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
-            population:[
+            cities: [
                 {
                     city: 'Houston',
                     state: 'Texas',
-                    population: 2300000
-                }, 
+                    population: 2000000
+                },
+                {
+                    city: 'Dallas',
+                    population: 1000000,
+                    team: 'Mavericks'
+                },
                 {
                     city: 'Los Angeles',
-                    state: 'California',
                     population: 4000000
-                }, 
-                {
-                    city: 'New York',
-                    state: 'New York',
-                    population: 8500000
                 }
             ],
-
             userInput: '',
-            filteredPopulation: []
+            filteredCities: []
         }
     }
 
-    handleChange(val) {
-        this.setState({ userInput: val });
-      }
-    
-      filterPopulation(prop) {
-        var population = this.state.population;
-        var filteredPopulation = [];
-        
-        for ( var i = 0; i < population.length; i++ ) {
-          if ( population[i].hasOwnProperty(prop) ) {
-            filteredPopulation.push(population[i]);
-          }
+    handleChangeInput(val) {
+        this.setState({
+            userInput: val
+        })
+    }
+
+    handleFilteredArray(prop) {
+        let cities = this.state.cities;
+        let filteredCities = [];
+
+        for(let i = 0; i < cities.length; i++) {
+            if(cities[i].hasOwnProperty(prop)) {
+                filteredCities.push(cities[i]);
+            }
         }
-    
-        this.setState({ filteredPopulation: filteredPopulation });
-      }
+        this.setState({
+            filteredCities: filteredCities
+        })
+    }
 
     render() {
+        const { userInput } = this.state;
         return (
             <div className="puzzleBox filterObjectPB">
-               <h4>Filter Object</h4>
-               <span className="puzzleText"></span>
-               <input 
-                className="inputLine" onChange={ (e) => this.handleChange(e.target.value) }></input>
-               <button className="confirmationButton" onClick={ () => this.filterPopulation(this.state.userInput) }>Filter</button>
-               <span className="resultsBox filterObjectRB">Filtered: { JSON.stringify(this.state.filteredPopulation, null, 10) } </span>
+                <h4>Filter Object</h4>
+                <span className="puzzleText">Original: { JSON.stringify(this.state.cities, null, 10) } </span>
+                <input
+                    onChange={e => this.handleChangeInput(e.target.value)}
+                    className="inputLine"></input>
+                <button 
+                    onClick={() => this.handleFilteredArray(
+                        userInput
+                    )}
+                    className="confirmationButton">Filter</button>
+                <span className="resultsBox filterObjectRB">Filtered: { JSON.stringify(this.state.filteredCities, null, 10) }</span>
             </div>
         )
     }
